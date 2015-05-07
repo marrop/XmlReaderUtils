@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Xml;
 
@@ -25,15 +26,21 @@ namespace RemoveXMLElements
 
     private static void CallAdd()
     {
-      const string filepath = @"C:\src\private\tmp\foersteordens_small.xml";
+      const string filepathFlx = @"C:\src\private\tmp\foersteordensFlx.xml";
+      const string filepathPsl = @"C:\src\private\tmp\foersteordensFlx.xml";
 
       var filename = DateTime.Now.Hour + "." + DateTime.Now.Minute + "." + DateTime.Now.Second;
-      var writeToFile = @"C:\src\private\tmp\foersteordens_small_added_" + filename + ".xml";
+      var writeToFileFlx = @"C:\src\private\tmp\foersteordensFlx_added_" + filename + ".xml";
+      var writeToFilePsl = @"C:\src\private\tmp\foersteordensPsl_added_" + filename + ".xml";
 
       var xmlnsNames = new[] { "FørsteordensregisterVersionsdata" };
 
-      var reader = new AddKursvaernElements(filepath, "kursværnOverfGl", xmlnsNames);
-      reader.WriteToFile(writeToFile);
+      var reader = new AddKursvaernElements(filepathFlx, "kursværnOverfGl", xmlnsNames);
+      var stopwatch = Stopwatch.StartNew();
+      reader.WriteToFile(writeToFileFlx);
+      stopwatch.Stop();
+      Console.WriteLine(stopwatch.Elapsed);
+      Console.ReadKey();
     }
 
     private static void CallRemove()

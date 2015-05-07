@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
 using System.Xml;
 
@@ -24,9 +23,17 @@ namespace RemoveXMLElements
         var elementName = "";
         var elementValue = "0.00";
 
-        var change = false;
-        var changeName = "";
-        var changeValue = "";
+        var changeOverfNy = false;
+        var changeOverfNyName = "";
+        var changeOverfNyValue = "";
+
+        var changeGenkGl = false;
+        var changeGenkGlName = "";
+        var changeGenkGlValue = "";
+
+        var changeGenkNy = false;
+        var changeGenkNyName = "";
+        var changeGenkNyValue = "";
         
         while (reader.Read())
         {
@@ -47,8 +54,18 @@ namespace RemoveXMLElements
                 }
                 else if (reader.Name.Equals("kursværnOverfNy"))
                 {
-                  changeName = reader.Name;
-                  change = true;
+                  changeOverfNyName = reader.Name;
+                  changeOverfNy = true;
+                }
+                else if (reader.Name.Equals("kursværnGenkGl"))
+                {
+                  changeGenkGlName = reader.Name;
+                  changeGenkGl = true;
+                }
+                else if (reader.Name.Equals("kursværnGenkNy"))
+                {
+                  changeGenkNyName = reader.Name;
+                  changeGenkNy = true;
                 }
                 else
                 {
@@ -73,8 +90,12 @@ namespace RemoveXMLElements
               //write the text in the node
               if (prefix)
                 elementValue = reader.Value;
-              else if (change)
-                changeValue = reader.Value;
+              else if (changeOverfNy)
+                changeOverfNyValue = reader.Value;
+              else if (changeGenkGl)
+                changeGenkGlValue = reader.Value;
+              else if (changeGenkNy)
+                changeGenkNyValue = reader.Value;
               else
                 writer.WriteString(reader.Value);
               break;
@@ -110,12 +131,26 @@ namespace RemoveXMLElements
                 
                 prefix = false;
               }
-              else if (change)
+              else if (changeOverfNy)
               {
-                if (changeName.Equals("kursværnOverfNy"))
-                  writer.WriteElementString("kursværnInternOverførselNy", elementValue);
+                if (changeOverfNyName.Equals("kursværnOverfNy"))
+                  writer.WriteElementString("kursværnInternOverførselNy", changeOverfNyValue);
 
-                change = false;
+                changeOverfNy = false;
+              }
+              else if (changeGenkGl)
+              {
+                if (changeGenkGlName.Equals("kursværnGenkGl"))
+                  writer.WriteElementString("kursværnGenkøbGl", changeGenkGlValue);
+
+                changeGenkGl = false;
+              }
+              else if (changeGenkNy)
+              {
+                if (changeGenkNyName.Equals("kursværnGenkNy"))
+                  writer.WriteElementString("kursværnGenkøbNy", changeGenkNyValue);
+
+                changeGenkNy = false;
               }
               else
                 writer.WriteEndElement();

@@ -27,7 +27,7 @@ namespace RemoveXMLElements
     private static void CallAdd()
     {
       const string filepathFlx = @"C:\src\private\tmp\foersteordensFlx.xml";
-      const string filepathPsl = @"C:\src\private\tmp\foersteordensFlx.xml";
+      const string filepathPsl = @"C:\src\private\tmp\foersteordensPsl.xml";
 
       var filename = DateTime.Now.Hour + "." + DateTime.Now.Minute + "." + DateTime.Now.Second;
       var writeToFileFlx = @"C:\src\private\tmp\foersteordensFlx_added_" + filename + ".xml";
@@ -35,11 +35,19 @@ namespace RemoveXMLElements
 
       var xmlnsNames = new[] { "FørsteordensregisterVersionsdata" };
 
-      var reader = new AddKursvaernElements(filepathFlx, "kursværnOverfGl", xmlnsNames);
+      // Flx
+      var readerFlx = new AddKursvaernElements(filepathFlx, "kursværnOverfGl", xmlnsNames);
       var stopwatch = Stopwatch.StartNew();
-      reader.WriteToFile(writeToFileFlx);
+      readerFlx.WriteToFile(writeToFileFlx);
       stopwatch.Stop();
       Console.WriteLine(stopwatch.Elapsed);
+
+      // Psl
+      var readerPsl = new AddKursvaernElements(filepathPsl, "kursværnOverfGl", xmlnsNames);
+      readerPsl.WriteToFile(writeToFilePsl);
+      stopwatch.Stop();
+      Console.WriteLine(stopwatch.Elapsed);
+
       Console.ReadKey();
     }
 

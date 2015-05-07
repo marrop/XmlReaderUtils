@@ -11,7 +11,8 @@ namespace RemoveXMLElements
     {
       try
       {
-        CallAdd();
+        //CallAdd();
+        CallAdd11();
         //CallRemove();
       }
       catch (XmlException xe)
@@ -22,6 +23,25 @@ namespace RemoveXMLElements
       {
         Console.WriteLine("File I/O Error: " + ioe);
       }
+    }
+
+    private static void CallAdd11()
+    {
+      const string filepath11Psl = @"C:\src\private\tmp\version11Psl.xml";
+
+      var filename = DateTime.Now.Hour + "." + DateTime.Now.Minute + "." + DateTime.Now.Second;
+      var writeToFile11Psl = @"C:\src\private\tmp\version11Psl_added_" + filename + ".xml";
+
+      var xmlnsNames = new[] { "FørsteordensregisterVersionsdata" };
+
+      // Psl
+      var readerFlx = new AddKursvaernElements(filepath11Psl, "kursværnOverfGl", xmlnsNames);
+      var stopwatch = Stopwatch.StartNew();
+      readerFlx.WriteToFile(writeToFile11Psl);
+      stopwatch.Stop();
+      Console.WriteLine(stopwatch.ElapsedMilliseconds);
+
+      Console.ReadKey();
     }
 
     private static void CallAdd()
@@ -40,13 +60,13 @@ namespace RemoveXMLElements
       var stopwatch = Stopwatch.StartNew();
       readerFlx.WriteToFile(writeToFileFlx);
       stopwatch.Stop();
-      Console.WriteLine(stopwatch.Elapsed);
+      Console.WriteLine(stopwatch.ElapsedMilliseconds);
 
       // Psl
       var readerPsl = new AddKursvaernElements(filepathPsl, "kursværnOverfGl", xmlnsNames);
       readerPsl.WriteToFile(writeToFilePsl);
       stopwatch.Stop();
-      Console.WriteLine(stopwatch.Elapsed);
+      Console.WriteLine(stopwatch.ElapsedMilliseconds);
 
       Console.ReadKey();
     }
